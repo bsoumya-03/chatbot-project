@@ -1,0 +1,159 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GymBuddy Assistan - Chat</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Chat container */
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 12px;
+      font-size: 15px;
+    }
+
+    .user-message {
+      align-self: flex-end;
+      background: #0d6efd;
+      color: white;
+    }
+
+    .bot-message {
+      align-self: flex-start;
+      background: #e4e6eb;
+      color: #333;
+    }
+
+    /* Input area */
+    .chat-input {
+      display: flex;
+      padding: 12px;
+      background: #fff;
+      border-top: 1px solid #ddd;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .chat-input button {
+      margin-left: 10px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 80px;
+      background: linear-gradient(100deg, #6a11cb, #a4508b);
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .chat-input button:hover {
+      background: #084298;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">🤖 GymBuddy Assistant</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="signin.html">Sign In</a></li>
+      <li><a href="signup.html">Sign Up</a></li>
+    </ul>
+   <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+  </nav>
+
+  <!-- Chat Section -->
+  <div class="chat-container" id="chat">
+    <div class="bot-message message">Hi! 💪 I'm GymBuddy Assistant. How can I help you today? . Ask me anything!</div>
+  </div>
+   <script src="script.js"></script>
+  <!-- Input Section -->
+  <div class="chat-input">
+    <input type="text" id="message-input" placeholder="Type your question..." />
+    <button id="send-btn">Send</button>
+  </div>
+
+  <script>
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("message-input");
+    const sendBtn = document.getElementById("send-btn");
+    const themeToggle = document.getElementById("theme-toggle");
+
+    // ✅ Add messages to UI
+    function addMessage(text, sender) {
+      const div = document.createElement("div");
+      div.classList.add("message", sender === "user" ? "user-message" : "bot-message");
+      div.textContent = text;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    // ✅ Send message to backend
+    async function sendMessage() {
+      const message = input.value.trim();
+      if (!message) return;
+      addMessage(message, "user");
+      input.value = "";
+
+      try {
+        const token = localStorage.getItem("token"); // from login
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({ message })
+        });
+
+        const data = await res.json();
+        if (data.reply) {
+          addMessage(data.reply, "bot");
+        } else {
+          addMessage("⚠️ No response from server.", "bot");
+        }
+      } catch (err) {
+        console.error(err);
+        addMessage("⚠️ Error sending message.", "bot");
+      }
+    }
+
+    // ✅ Send on button click
+    sendBtn.addEventListener("click", sendMessage);
+
+    // ✅ Send on Enter key
+    input.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
