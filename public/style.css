@@ -777,3 +777,17 @@ button { cursor: pointer; font-family: 'DM Sans', sans-serif; }
   .cta-section { padding: 80px 24px; }
   .about-hero { padding: 60px 24px; }
 }
+
+
+    .btn {
+      padding: 10px 20px;
+      background-color: #b6f542;;
+      border-radius: 8px;
+      border: 1px solid #b6f542;;
+      transition: 0.3s ease-in-out;
+    }
+
+    .btn:hover {
+      background-color: #fff;
+      color: #000;
+    }

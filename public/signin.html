@@ -1,23 +1,41 @@
 <!doctype html>
 <html>
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Sign In</title><link rel="stylesheet" href="style.css"/></head>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Sign In</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
 <body>
-<nav><div class="logo">🤖 GymBuddy Assistant</div>
-  <ul><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="signin.html">Sign In</a></li><li><a href="signup.html">Sign Up</a></li></ul>
-  <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-</nav>
+  <nav>
+    <div class="logo">🤖 GymBuddy Assistant</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="signin.html">Sign In</a></li>
+      <li><a href="signup.html">Sign Up</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+  </nav>
 
-<section>
-  <h1>Sign In</h1>
-  <form id="signin-form">
-    <label>Username</label><br>
-    <input id="si-email" type="text" required /><br><br>
-    <label>Password</label><br>
-    <input id="si-password" type="password" required /><br><br>
-    <button type="submit">Sign In</button>
-  </form>
-</section>
+  <section>
+    <h1>Sign In</h1>
+    <form id="signin-form">
+      <label>Username</label><br>
+      <input id="si-email" type="text" required /><br><br>
+      <label>Password</label><br>
+      <input id="si-password" type="password" required /><br><br>
+      <div style="display: flex;justify-content: center;
+    align-items: center;">
+        <button class="btn" type="submit">Sign In</button>
 
-<script src="script.js"></script>
+      </div>
+    </form>
+  </section>
+  <script src="script.js"></script>
 </body>
+
 </html>
