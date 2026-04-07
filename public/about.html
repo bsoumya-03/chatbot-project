@@ -1,23 +1,149 @@
-<!doctype html>
-<html>
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>About</title><link rel="stylesheet" href="style.css"/></head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GymBuddy Assistant - About</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
 <body>
-<nav> <div class="logo">🤖 GymBuddy Assistant</div>
-  <ul>
-    <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="signin.html">Sign In</a></li><li><a href="signup.html">Sign Up</a></li>
-  </ul>
-  <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-</nav>
 
-<section>
-  <h1>About GymBuddy Assistan</h1>
-  <p>We build production-ready interactive chatbot websites that respond to users naturally.</p>
-</section>
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">🤖 GymBuddy Assistant</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="signin.html">Sign In</a></li>
+      <li><a href="signup.html">Sign Up</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+  </nav>
 
-<!-- include chatbot toggle + widget same as index -->
-<button id="chat-toggle"><a href="chat.html">💬</a></button>
+  <!-- HERO -->
+  <div class="about-hero">
+    <div class="badge">Our Story</div>
+    <h1>About <span class="accent">GymBuddy</span><br>Assistant</h1>
+    <p>We build intelligent fitness companions that make expert gym advice accessible to everyone — anytime, anywhere.</p>
+  </div>
 
+  <!-- WHAT WE DO -->
+  <div class="section fade-in">
+    <div class="section-label">What We Do</div>
+    <div class="section-title">Built for Every Fitness Level</div>
+    <div class="cards-grid">
+      <div class="card">
+        <span class="card-icon">🤖</span>
+        <h3>AI-Powered Chat</h3>
+        <p>Ask anything about workouts, nutrition, or recovery. Our AI gives you instant, personalized answers 24/7.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">💪</span>
+        <h3>Workout Guidance</h3>
+        <p>Get tailored exercise plans, form tips, and progression advice based on your goals and fitness level.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🥗</span>
+        <h3>Nutrition Advice</h3>
+        <p>From meal prep to macros, GymBuddy helps you fuel your body the right way for maximum results.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">📊</span>
+        <h3>Progress Tracking</h3>
+        <p>Log your sessions, track improvements, and stay motivated with clear progress insights over time.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">⚡</span>
+        <h3>Instant Responses</h3>
+        <p>No waiting. No appointments. Get expert-level fitness answers in seconds, right when you need them.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🔒</span>
+        <h3>Private & Secure</h3>
+        <p>Your health data stays yours. We use JWT authentication and encrypted storage to keep your info safe.</p>
+      </div>
+    </div>
+  </div>
 
-<script src="script.js"></script>
+  <!-- MISSION -->
+  <div class="mission-block fade-in">
+    <div class="mission-text">
+      <div class="section-label">Our Mission</div>
+      <div class="section-title">Fitness Advice Should Be Free For Everyone</div>
+      <div class="divider"></div>
+      <p>Personal trainers cost hundreds per month. GymBuddy was built to change that. We believe everyone deserves access to quality fitness guidance — whether you're a beginner or an athlete chasing a new personal record.</p>
+      <p>Our AI draws from exercise science, nutrition research, and real-world training knowledge to give you answers that actually work.</p>
+    </div>
+    <div class="mission-visual">🏋️</div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="steps-wrapper fade-in">
+    <div class="steps-inner">
+      <div class="section-label">How It Works</div>
+      <div class="section-title">Three Simple Steps</div>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-number">01</div>
+          <h3>Ask Your Question</h3>
+          <p>Type anything — workout plans, muscle soreness, what to eat before a session.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">02</div>
+          <h3>AI Processes It</h3>
+          <p>Our backend sends your message to a powerful AI model that understands fitness and training science.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">03</div>
+          <h3>Get Instant Advice</h3>
+          <p>Receive a clear, accurate, and actionable response in seconds. Apply it immediately to your training.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">04</div>
+          <h3>Keep Progressing</h3>
+          <p>Come back anytime. GymBuddy is available 24/7, so you always have a coach in your pocket.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row fade-in">
+    <div class="stat">
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">Always Online</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">1K+</div>
+      <div class="stat-label">Questions Answered</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Free to Use</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">0s</div>
+      <div class="stat-label">Wait Time</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section fade-in">
+    <h2>Ready to Train Smarter?</h2>
+    <p>Join thousands getting better results with GymBuddy Assistant.</p>
+    <a class="cta" href="chat.html">Start Chatting Now →</a>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
 </body>
 </html>
