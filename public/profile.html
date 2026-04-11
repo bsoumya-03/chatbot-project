@@ -6,13 +6,12 @@
   <title>Profile — GymBuddy Assistant</title>
 
   <!-- No flash fix -->
-  <script>
-    (function() {
-      if (localStorage.getItem('theme') === 'dark') {
-        document.documentElement.classList.add('dark');
-      }
-    })();
-  </script>
+  body>
+<script>
+  if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark');
+  }
+</script>
 
   <link rel="stylesheet" href="style.css"/>
 

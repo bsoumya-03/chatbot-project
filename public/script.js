@@ -119,15 +119,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.addEventListener("click", (e) => {
       if (e.target.id === "logout-btn") {
+        const confirmed = confirm("Are you sure you want to logout ?");
+        if(confirmed){
         localStorage.removeItem("token");
         window.location = "/index.html";
       }
+    }
     });
   } else {
     if (signinLink) signinLink.parentElement.style.display = "";
     if (signupLink) signupLink.parentElement.style.display = "";
   }
-});
+
   const chatToggle = document.getElementById("chat-toggle");
   if (chatToggle) chatToggle.addEventListener("click", toggleChat);
   const sendBtn = document.querySelector(".chat-footer button");
