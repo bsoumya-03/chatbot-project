@@ -36,7 +36,15 @@ let db;
     username TEXT,
     email TEXT UNIQUE,
     password TEXT
-  )
+  );
+
+  CREATE TABLE IF NOT EXISTS contacts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    email TEXT NOT NULL,
+    message TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
 `);
 })();
 
@@ -154,6 +162,48 @@ if (!response.ok) {
     res.json({ reply: "⚠️ Error processing your request." });
   }
 });
+// ── your existing routes above (/api/signup, /api/signin, /api/chat) ──
+
+
+// ── CONTACT ROUTE ── ← paste here
+app.post("/api/contact", async (req, res) => {
+  try {
+    const { username, email, message } = req.body;
+
+    if (!username || !email || !message) {
+      return res.status(400).json({ error: "All fields are required." });
+    }
+
+    await db.run(
+      "INSERT INTO contacts (username, email, message) VALUES (?, ?, ?)",
+      [username, email, message]
+    );
+
+    res.json({ success: true, message: "Message received!" });
+
+  } catch (err) {
+    console.error("Contact route error:", err);
+    res.status(500).json({ error: "Server error. Please try again." });
+  }
+});
+// ── GET PROFILE ──
+app.get("/api/profile", authenticate, async (req, res) => {
+  const user = await db.get("SELECT username, email FROM users WHERE id = ?", [req.user.id]);
+  if (!user) return res.status(404).json({ error: "User not found" });
+  res.json(user);
+});
+
+// ── CHANGE PASSWORD ──
+app.post("/api/change-password", authenticate, async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const user = await db.get("SELECT * FROM users WHERE id = ?", [req.user.id]);
+  const valid = await bcrypt.compare(currentPassword, user.password);
+  if (!valid) return res.status(400).json({ error: "Current password is wrong." });
+  const hashed = await bcrypt.hash(newPassword, 10);
+  await db.run("UPDATE users SET password = ? WHERE id = ?", [hashed, req.user.id]);
+  res.json({ success: true });
+});
+
 
 // ====================== START SERVER ======================
 

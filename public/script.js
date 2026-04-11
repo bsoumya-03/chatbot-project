@@ -1,12 +1,28 @@
-// script.js - client side
+//a script.js - client side
+// ✅ LINE 1 - Read saved theme
+(function () {
+  const saved = localStorage.getItem("theme");
+  if (saved === "dark") {
+    document.body.classList.add("dark");
+  }
+})();
+
 const apiBase = "";
 
 function toggleTheme() {
   document.body.classList.toggle("dark");
+  const isDark = document.body.classList.contains("dark");
   const btn = document.querySelector(".theme-toggle");
-  if (btn) btn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+  if (btn) btn.textContent = isDark ? "☀️" : "🌙";
+  localStorage.setItem("theme", isDark ? "dark" : "light");
 }
 
+// ✅ Set button icon after DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+  const saved = localStorage.getItem("theme");
+  const btn = document.querySelector(".theme-toggle");
+  if (btn) btn.textContent = saved === "dark" ? "☀️" : "🌙";
+});
 // Chat widget logic
 function toggleChat() {
   const box = document.querySelector(".chatbot-container");
@@ -84,6 +100,34 @@ async function signin(e) {
 
 // Attach event listeners when DOM ready
 document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token");
+  const signinLink = document.querySelector('a[href="signin.html"]');
+  const signupLink = document.querySelector('a[href="signup.html"]');
+  const navUl = document.querySelector('nav ul');
+
+  if (token) {
+    if (signinLink) signinLink.parentElement.style.display = "none";
+    if (signupLink) signupLink.parentElement.style.display = "none";
+
+    const profileLi = document.createElement("li");
+    profileLi.innerHTML = `<a href="profile.html">👤 Profile</a>`;
+    navUl.appendChild(profileLi);
+
+    const logoutLi = document.createElement("li");
+    logoutLi.innerHTML = `<a href="#" id="logout-btn">Logout</a>`;
+    navUl.appendChild(logoutLi);
+
+    document.addEventListener("click", (e) => {
+      if (e.target.id === "logout-btn") {
+        localStorage.removeItem("token");
+        window.location = "/index.html";
+      }
+    });
+  } else {
+    if (signinLink) signinLink.parentElement.style.display = "";
+    if (signupLink) signupLink.parentElement.style.display = "";
+  }
+});
   const chatToggle = document.getElementById("chat-toggle");
   if (chatToggle) chatToggle.addEventListener("click", toggleChat);
   const sendBtn = document.querySelector(".chat-footer button");
@@ -95,4 +139,48 @@ document.addEventListener("DOMContentLoaded", () => {
   if (suForm) suForm.addEventListener("submit", signup);
   const siForm = document.getElementById("signin-form");
   if (siForm) siForm.addEventListener("submit", signin);
+});
+
+
+// ── CONTACT FORM ── ← paste here at the very bottom
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const username = document.getElementById('c-username').value.trim();
+    const email    = document.getElementById('c-email').value.trim();
+    const message  = document.getElementById('c-message').value.trim();
+    const status   = document.getElementById('form-status');
+    const btn      = document.querySelector('.send-btn');
+
+    btn.classList.add('loading');
+    btn.querySelector('#btn-text').textContent = 'Sending...';
+    status.textContent = '';
+    status.className = 'form-status';
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, message })
+      });
+      const data = await res.json();
+      if (data.success) {
+        status.textContent = '✅ Message sent successfully!';
+        status.className = 'form-status success';
+        form.reset();
+      } else {
+        status.textContent = '❌ ' + (data.error || 'Something went wrong.');
+        status.className = 'form-status error';
+      }
+    } catch (err) {
+      status.textContent = '❌ Network error. Please try again.';
+      status.className = 'form-status error';
+    } finally {
+      btn.classList.remove('loading');
+      btn.querySelector('#btn-text').textContent = 'Send Message';
+    }
+  });
 });
