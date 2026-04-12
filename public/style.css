@@ -113,6 +113,9 @@ nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 nav ul li a {
@@ -419,6 +422,9 @@ button { cursor: pointer; font-family: 'DM Sans', sans-serif; }
     gap: 14px;
     flex-wrap: wrap;
     justify-content: center;
+    position: relative;
+    left: auto;
+    transform: none;
   }
   section { padding: 60px 24px; }
   section h1.typing {
@@ -1297,4 +1303,99 @@ body:not(.dark) .theme-toggle {
   opacity: 1 !important;
   line-height: 1;
   text-shadow: 0 0 20px rgba(182, 245, 66, 0.4);
+}
+
+/* Profile Dropdown Styles */
+.profile-dropdown-container {
+  display: flex !important;
+  align-items: center;
+  position: relative;
+  margin-left: 8px;
+}
+
+.profile-icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.profile-icon-btn:hover {
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 55px;
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px;
+  min-width: 150px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+  z-index: 999;
+}
+
+.profile-dropdown.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.profile-dropdown a {
+  display: block;
+  padding: 10px 16px;
+  color: var(--text);
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+  text-align: left;
+}
+
+/* Override global nav "::after" effect for dropdown links */
+.profile-dropdown a::after {
+  display: none !important;
+}
+
+.profile-dropdown a:hover {
+  background: rgba(182, 245, 66, 0.1);
+  color: var(--accent);
+}
+
+/* Light Mode Overrides for Dropdown */
+body:not(.dark) .profile-dropdown {
+  background: #ffffff;
+  border-color: #dddddd;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+}
+
+body:not(.dark) .profile-dropdown a {
+  color: #111111;
+}
+
+body:not(.dark) .profile-dropdown a:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #000;
 }
