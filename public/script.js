@@ -1,5 +1,36 @@
 //a script.js - client side
 (function () {
+  if (!document.getElementById('sweetalert-script')) {
+    const swalScript = document.createElement('script');
+    swalScript.id = 'sweetalert-script';
+    swalScript.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+    document.head.appendChild(swalScript);
+  }
+})();
+
+window.showToast = function(message, icon = "success") {
+  if (window.Swal) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      }
+    });
+    Toast.fire({
+      icon: icon,
+      title: message
+    });
+  } else {
+    alert(message);
+  }
+};
+
+(function () {
   const saved = localStorage.getItem("theme");
   if (saved === "dark") {
     document.body.classList.add("dark");
@@ -13,6 +44,10 @@ function toggleTheme() {
   const isDark = document.body.classList.contains("dark");
   const btn = document.querySelector(".theme-toggle");
   if (btn) btn.textContent = isDark ? "☀️" : "🌙";
+  
+  const dropdownThemeBtn = document.getElementById("dropdown-theme-toggle");
+  if (dropdownThemeBtn) dropdownThemeBtn.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+
   localStorage.setItem("theme", isDark ? "dark" : "light");
 }
 
@@ -79,9 +114,11 @@ async function signup(e) {
   const data = await res.json();
   if (data.token) {
     localStorage.setItem("token", data.token);
-    alert("Signed up!");
-    window.location = "/index.html";
-  } else alert(data.error || "Signup failed");
+    window.showToast("Signed up!", "success");
+    setTimeout(() => { window.location = "/index.html"; }, 1500);
+  } else {
+    window.showToast(data.error || "Signup failed", "error");
+  }
 }
 
 async function signin(e) {
@@ -92,9 +129,11 @@ async function signin(e) {
   const data = await res.json();
   if (data.token) {
     localStorage.setItem("token", data.token);
-    alert("Signed in!");
-    window.location = "/index.html";
-  } else alert(data.error || "Signin failed");
+    window.showToast("Signed in!", "success");
+    setTimeout(() => { window.location = "/index.html"; }, 1500);
+  } else {
+    window.showToast(data.error || "Signin failed", "error");
+  }
 }
 
 // Attach event listeners when DOM ready
@@ -108,22 +147,70 @@ document.addEventListener("DOMContentLoaded", () => {
     if (signinLink) signinLink.parentElement.style.display = "none";
     if (signupLink) signupLink.parentElement.style.display = "none";
 
-    const profileLi = document.createElement("li");
-    profileLi.innerHTML = `<a href="profile.html">👤 Profile</a>`;
-    navUl.appendChild(profileLi);
+    // Hide the original theme-toggle button
+    const mainThemeToggle = document.querySelector(".theme-toggle");
+    if (mainThemeToggle) mainThemeToggle.style.display = "none";
 
-    const logoutLi = document.createElement("li");
-    logoutLi.innerHTML = `<a href="#" id="logout-btn">Logout</a>`;
-    navUl.appendChild(logoutLi);
+    const isDark = document.body.classList.contains("dark");
+    const themeText = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+
+    const profileDropdown = document.createElement("div");
+    profileDropdown.classList.add("profile-dropdown-container");
+    profileDropdown.innerHTML = `
+      <div class="profile-icon-btn" id="profile-dropdown-btn">
+        <img src="https://ui-avatars.com/api/?name=User&background=b6f542&color=0d0d0d&rounded=true&bold=true" alt="Profile" class="profile-img">
+      </div>
+      <div class="profile-dropdown" id="profile-dropdown-menu">
+        <a href="profile.html">Profile</a>
+        <a href="#" id="dropdown-theme-toggle">${themeText}</a>
+        <a href="#" id="logout-btn">Logout</a>
+      </div>
+    `;
+    
+    // Append to <nav> directly so it appears at the far right end
+    const navNode = document.querySelector("nav");
+    if (navNode) navNode.appendChild(profileDropdown);
 
     document.addEventListener("click", (e) => {
-      if (e.target.id === "logout-btn") {
-        const confirmed = confirm("Are you sure you want to logout ?");
-        if(confirmed){
-        localStorage.removeItem("token");
-        window.location = "/index.html";
+      const btn = document.getElementById("profile-dropdown-btn");
+      const menu = document.getElementById("profile-dropdown-menu");
+      
+      if (btn && btn.contains(e.target)) {
+        menu.classList.toggle("show");
+      } else if (menu && !menu.contains(e.target)) {
+        menu.classList.remove("show");
       }
-    }
+
+      if (e.target.id === "dropdown-theme-toggle") {
+        e.preventDefault();
+        toggleTheme();
+      }
+
+      if (e.target.id === "logout-btn") {
+        e.preventDefault();
+        if (window.Swal) {
+          Swal.fire({
+            title: "Are you sure?",
+            text: "Are you sure you want to logout?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#b6f542",
+            cancelButtonColor: "#ff6b6b",
+            confirmButtonText: "Yes, logout!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              localStorage.removeItem("token");
+              window.location = "/index.html";
+            }
+          });
+        } else {
+          const confirmed = confirm("Are you sure you want to logout ?");
+          if(confirmed){
+            localStorage.removeItem("token");
+            window.location = "/index.html";
+          }
+        }
+      }
     });
   } else {
     if (signinLink) signinLink.parentElement.style.display = "";

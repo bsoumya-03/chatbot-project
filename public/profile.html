@@ -6,10 +6,16 @@
   <title>Profile — GymBuddy Assistant</title>
 
   <!-- No flash fix -->
-  <body>
+  body>
 <script>
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark');
+  }
+  if (!document.getElementById('sweetalert-script')) {
+    const swalScript = document.createElement('script');
+    swalScript.id = 'sweetalert-script';
+    swalScript.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+    document.head.appendChild(swalScript);
   }
 </script>
 
@@ -292,8 +298,8 @@
       <li><a href="index.html">Home</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
-      <li><a href="profile.html" style="color:var(--accent)">👤 Profile</a></li>
-      <li><a href="#" id="logout-btn">Logout</a></li>
+      <li><a href="signin.html">Sign In</a></li>
+      <li><a href="signup.html">Sign Up</a></li>
     </ul>
     <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
   </nav>
@@ -385,14 +391,8 @@
     </div>
   </div>
 
+  <script src="script.js"></script>
   <script>
-    function toggleTheme() {
-      document.documentElement.classList.toggle("dark");
-      const isDark = document.documentElement.classList.contains("dark");
-      const btn = document.querySelector(".theme-toggle");
-      if (btn) btn.textContent = isDark ? "☀️" : "🌙";
-      localStorage.setItem("theme", isDark ? "dark" : "light");
-    }
     // ── LOAD USER INFO FROM TOKEN ──
     function parseJwt(token) {
       try {
@@ -432,24 +432,16 @@
     loadProfile();
 
     // ── LOGOUT ──
-    // ── LOGOUT ──
-document.getElementById("logout-btn").addEventListener("click", (e) => {
-  e.preventDefault();
-  document.getElementById("logout-confirm-modal").classList.add("active");
-});
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      localStorage.removeItem("token");
+      window.location = "/index.html";
+    });
 
-document.getElementById("profile-logout-btn").addEventListener("click", () => {
-  document.getElementById("logout-confirm-modal").classList.add("active");
-});
+    document.getElementById("profile-logout-btn").addEventListener("click", () => {
+      localStorage.removeItem("token");
+      window.location = "/index.html";
+    });
 
-document.getElementById("logout-cancel").addEventListener("click", () => {
-  document.getElementById("logout-confirm-modal").classList.remove("active");
-});
-
-document.getElementById("logout-confirm").addEventListener("click", () => {
-  localStorage.removeItem("token");
-  window.location = "/index.html";
-});
     // ── CHANGE PASSWORD MODAL ──
     document.getElementById("change-password-btn").addEventListener("click", () => {
       document.getElementById("modal-overlay").classList.add("active");
