@@ -28,8 +28,7 @@ let db;
     filename: "./database.db",
     driver: sqlite3.Database,
   });
-
-  // ✅ FIXED: removed duplicate db.exec
+  
   await db.exec(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -203,6 +202,7 @@ app.post("/api/change-password", authenticate, async (req, res) => {
   await db.run("UPDATE users SET password = ? WHERE id = ?", [hashed, req.user.id]);
   res.json({ success: true });
 });
+
 
 
 // ====================== START SERVER ======================

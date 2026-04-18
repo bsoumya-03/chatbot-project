@@ -1,5 +1,4 @@
 //a script.js - client side
-// ✅ LINE 1 - Read saved theme
 (function () {
   const saved = localStorage.getItem("theme");
   if (saved === "dark") {

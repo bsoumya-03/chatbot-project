@@ -6,7 +6,7 @@
   <title>Profile — GymBuddy Assistant</title>
 
   <!-- No flash fix -->
-  body>
+  <body>
 <script>
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark');
@@ -215,9 +215,29 @@
     }
 
     .modal input {
-      width: 100%;
-      margin-bottom: 16px;
-    }
+  width: 100% !important;
+  background: #1a1a1a !important;
+  border: 1.5px solid #555555 !important;
+  border-radius: 10px !important;
+  padding: 13px 14px !important;
+  font-size: 14px !important;
+  color: #ffffff !important;
+  font-family: 'DM Sans', sans-serif !important;
+  outline: none !important;
+  transition: border-color 0.3s, box-shadow 0.3s !important;
+  margin-bottom: 16px !important;
+  display: block !important;
+}
+
+.modal input:focus {
+  border-color: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15) !important;
+  background: #222222 !important;
+}
+
+.modal input::placeholder {
+  color: #666666 !important;
+}
 
     .modal-btns {
       display: flex;
@@ -260,6 +280,7 @@
 
     /* Light mode fixes */
     html.dark body { --bg: #080808; --surface: #111; }
+    
   </style>
 </head>
 <body>
@@ -322,12 +343,29 @@
       </div>
 
       <!-- Logout -->
-      <button class="logout-btn" id="profile-logout-btn">
-        🚪 Logout
-      </button>
+<button class="logout-btn" id="profile-logout-btn">
+  🚪 Logout
+</button>
 
+<!-- LOGOUT CONFIRMATION MODAL -->
+<div class="modal-overlay" id="logout-confirm-modal">
+  <div class="modal" style="max-width:340px; text-align:center;">
+    <div style="font-size:40px; margin-bottom:16px;"></div>
+    <h2 style="margin-bottom:8px;">Logout?</h2>
+    <p style="color:var(--muted); font-size:14px; margin-bottom:24px;">
+      Are you sure you want to logout?
+    </p>
+    <div class="modal-btns">
+      <button class="btn-cancel" id="logout-cancel">Cancel</button>
+      <button id="logout-confirm" style="
+        flex:1; padding:12px; border-radius:10px;
+        font-size:14px; font-weight:700; cursor:pointer;
+        background:#ff6b6b; color:#fff; border:none;
+        font-family:'DM Sans', sans-serif;
+      ">Yes, Logout</button>
     </div>
   </div>
+</div>
 
   <!-- CHANGE PASSWORD MODAL -->
   <div class="modal-overlay" id="modal-overlay">
@@ -394,16 +432,24 @@
     loadProfile();
 
     // ── LOGOUT ──
-    document.getElementById("logout-btn").addEventListener("click", () => {
-      localStorage.removeItem("token");
-      window.location = "/index.html";
-    });
+    // ── LOGOUT ──
+document.getElementById("logout-btn").addEventListener("click", (e) => {
+  e.preventDefault();
+  document.getElementById("logout-confirm-modal").classList.add("active");
+});
 
-    document.getElementById("profile-logout-btn").addEventListener("click", () => {
-      localStorage.removeItem("token");
-      window.location = "/index.html";
-    });
+document.getElementById("profile-logout-btn").addEventListener("click", () => {
+  document.getElementById("logout-confirm-modal").classList.add("active");
+});
 
+document.getElementById("logout-cancel").addEventListener("click", () => {
+  document.getElementById("logout-confirm-modal").classList.remove("active");
+});
+
+document.getElementById("logout-confirm").addEventListener("click", () => {
+  localStorage.removeItem("token");
+  window.location = "/index.html";
+});
     // ── CHANGE PASSWORD MODAL ──
     document.getElementById("change-password-btn").addEventListener("click", () => {
       document.getElementById("modal-overlay").classList.add("active");
