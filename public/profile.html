@@ -6,7 +6,7 @@
   <title>Profile — GymBuddy Assistant</title>
 
   <!-- No flash fix -->
-  body>
+  <body>
 <script>
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark');
@@ -432,15 +432,18 @@
     loadProfile();
 
     // ── LOGOUT ──
-    document.getElementById("logout-btn").addEventListener("click", () => {
-      localStorage.removeItem("token");
-      window.location = "/index.html";
-    });
-
     document.getElementById("profile-logout-btn").addEventListener("click", () => {
-      localStorage.removeItem("token");
-      window.location = "/index.html";
-    });
+  document.getElementById("logout-confirm-modal").classList.add("active");
+});
+
+document.getElementById("logout-cancel").addEventListener("click", () => {
+  document.getElementById("logout-confirm-modal").classList.remove("active");
+});
+
+document.getElementById("logout-confirm").addEventListener("click", () => {
+  localStorage.removeItem("token");
+  window.location = "/index.html";
+});
 
     // ── CHANGE PASSWORD MODAL ──
     document.getElementById("change-password-btn").addEventListener("click", () => {
